@@ -1,0 +1,34 @@
+{
+  "name": "underwater-world",
+  "version": "1.0.0",
+  "description": "3d Underwater World",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmanh131/ComputerVison-FinalProject.git"
+  },
+  "keywords": [
+    "underwater",
+    "3d",
+    "threejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vmanh131/ComputerVison-FinalProject/issues"
+  },
+  "homepage": "https://github.com/vmanh131/ComputerVison-FinalProject#readme",
+  "dependencies": {
+    "fastnoise-lite": "^1.1.0",
+    "three": "^0.159.0",
+    "tweenjs": "^1.0.2"
+  },
+  "devDependencies": {
+    "@tweenjs/tween.js": "^21.0.0",
+    "dat.gui": "^0.7.9",
+    "vite": "^5.0.10"
+  }
+}
