@@ -99,16 +99,6 @@ scene.add(spotLightHelper);
 // Create mouse Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// controls.target = waterPosition;
-
-// controls.minPolarAngle = 0;
-// controls.maxPolarAngle = Math.PI / 2. - 0.1;
-
-// controls.minDistance = 1.5;
-// controls.maxDistance = 10;
-
-// Target for computing the water refraction
-
 // Clock
 const clock = new THREE.Clock();
 
@@ -135,70 +125,6 @@ const targetmesh = new THREE.Mesh(targetgeometry);
 const floorGeometry = new THREE.PlaneGeometry(100, 100, 1, 1);
 //group.add(floorGeometry);
 
-const objLoader = new OBJLoader();
-let shark;
-const sharkLoaded = new Promise((resolve) => {
-  objLoader.load('assets/WhiteShark.obj', (sharkGeometry) => {
-    sharkGeometry = sharkGeometry.children[0].geometry;
-    sharkGeometry.computeVertexNormals();
-    sharkGeometry.scale(0.12, 0.12, 0.12);
-    sharkGeometry.rotateX(Math.PI / 2.);
-    sharkGeometry.rotateZ(-Math.PI / 2.);
-    sharkGeometry.translate(0, 0, 0.4);
-    
-    shark = sharkGeometry;
-    //group.add(shark);
-    resolve();
-  });
-});
-
-let rock1;
-let rock2;
-const rockLoaded = new Promise((resolve) => {
-  objLoader.load('assets/rock.obj', (rockGeometry) => {
-    rockGeometry = rockGeometry.children[0].geometry;
-    rockGeometry.computeVertexNormals();
-
-    rock1 = new THREE.BufferGeometry().copy(rockGeometry);
-    rock1.scale(0.05, 0.05, 0.02);
-    rock1.translate(0.2, 0., 0.1);
-
-    rock2 = new THREE.BufferGeometry().copy(rockGeometry);
-    rock2.scale(0.05, 0.05, 0.05);
-    rock2.translate(-0.5, 0.5, 0.2);
-    rock2.rotateZ(Math.PI / 2.);
-    //group.add(rock1);
-    //group.add(rock2);
-    resolve();
-  });
-});
-
-let plant;
-const plantLoaded = new Promise((resolve) => {
-  objLoader.load('assets/plant.obj', (plantGeometry) => {
-    plantGeometry = plantGeometry.children[0].geometry;
-    plantGeometry.computeVertexNormals();
-
-    plant = plantGeometry;
-    plant.rotateX(Math.PI / 6.);
-    plant.scale(0.03, 0.03, 0.03);
-    plant.translate(-0.5, 0.5, 0.);
-    //(plant);
-    resolve();
-  });
-});
-
-
-// const cubeGeometry = new THREE.BoxGeometry(50, 50);
-// const cubeMaterial = new THREE.MeshStandardMaterial({color: 0x00ff00});
-// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// scene.add(cube);
-// group.add(plant);
-// group.add(shark);
-// group.add(floorGeometry);
-// group.add(rock1);
-// group.add(rock2);
-//scene.add(group);
 
 let envGeometries = [];
 
@@ -356,7 +282,6 @@ function moveCircle(fish, deltaTime){
   fish.position.y += 0.01 * Math.cos(timer2 / 30 * Math.PI * 2);
   fish.position.z += 0;
 
-
   }
 
 
@@ -427,8 +352,6 @@ const causticsMesh = new THREE.Mesh(planeGeometry, materialCaustics);
 
   spotLight.map = temporaryRenderTarget.texture;
 
-//causticsMesh.castShadow = true;
-//scene.add(causticsMesh);
 
 
 var count = 1;
@@ -445,12 +368,11 @@ function animate() {
   renderer.setRenderTarget(null);
   renderer.clear();
 
-  //renderer.render(causticsScene, causticsCamera);
   renderer.render(scene, camera);
 
   //////movefish
   var delta = clock.getDelta(); 
-  for (var i = 0; i < mixers.length; i++) { // Cập nhật tất cả các mixer
+  for (var i = 0; i < mixers.length; i++) { 
     var mixer = mixers[i];
     mixer.update(delta);
   }
@@ -464,82 +386,12 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-// function onMouseMove(event) {
-//   const rect = canvas.getBoundingClientRect();
-
-//   mouse.x = (event.clientX - rect.left) * 2 / width - 1;
-//   mouse.y = - (event.clientY - rect.top) * 2 / height + 1;
-
-//   raycaster.setFromCamera(mouse, camera);
-
-//   const intersects = raycaster.intersectObject(targetmesh);
-
-//   for (let intersect of intersects) {
-//     waterSimulation.addDrop(renderer, intersect.point.x, intersect.point.y, 0.03, 0.02);
-//   }
-// }
-
 const loaded = [
-  // waterSimulation.loaded,
-  // water.loaded,
-  // environmentMap.loaded,
-  // environment.loaded,
-  // caustics.loaded,
-  // debug.loaded,
-  // sharkLoaded,
-  // rockLoaded,
-  // plantLoaded,
-  coralLoaded
+   coralLoaded
 ];
 
-// function testAlphaBlend(texture, textureAlpha) {
-//   const size = textureAlpha.image.width * textureAlpha.image.height;
-//   const textureData = texture.image.data;
-//   const data = textureAlpha.image.data;
-
-//   // generate a random color and update texture data
-
-//   // color.setHex( Math.random() * 0xffffff );
-
-//   // const r = Math.floor( color.r * 255 );
-//   // const g = Math.floor( color.g * 255 );
-//   // const b = Math.floor( color.b * 255 );
-
-//   for ( let i = 0; i < size; i ++ ) {
-//       if (data[i].alpha > 0) {
-//         data[i] = data[i] * textureData[i];
-//       }
-//   }
-// }
 
 Promise.all(loaded).then(() => {
-  // envGeometries.push(floorGeometry);
-  // envGeometries.push(shark);
-  // envGeometries.push(rock1);
-  // envGeometries.push(rock2);
-
-  // //const envGeometries = [floorGeometry, shark, rock1, rock2, plant, coralreef];
-  // // group.children.forEach(child => {
-  // //   envGeometries.push(child.geometry);
-  // // });
-
-  // environmentMap.setGeometries(envGeometries);
-  // environment.setGeometries(envGeometries);
-
-  // environment.addTo(scene);
-  // scene.add(water.mesh);
-
-  // caustics.setDeltaEnvTexture(1. / environmentMap.size);
-
-  // //canvas.addEventListener('mousemove', { handleEvent: onMouseMove });
-
-  // for (var i = 0; i < 5; i++) {
-  //   waterSimulation.addDrop(
-  //     renderer,
-  //     Math.random() * 2 - 1, Math.random() * 2 - 1,
-  //     0.03, (i & 1) ? 0.02 : -0.02
-  //   );
-  // }
-
+ 
   animate();
 });
