@@ -350,10 +350,13 @@ function moveCircle(fish, deltaTime){
       timer2 = 0;
     }
   timer2 += deltaTime;
+  
 
   fish.position.x += 0.005 * Math.sin(timer2 / 30 * Math.PI * 2) ;
   fish.position.y += 0.01 * Math.cos(timer2 / 30 * Math.PI * 2);
   fish.position.z += 0;
+
+
   }
 
 
@@ -372,7 +375,9 @@ function moveCircle(fish, deltaTime){
 function moveFish(deltaTime) {
   fishGroup.children.forEach((fish, index) => {
 
-      moveCircle(fish, deltaTime);
+    moveCircle(fish, deltaTime);
+
+      
   });
 }
 
